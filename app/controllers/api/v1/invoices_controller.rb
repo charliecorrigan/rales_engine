@@ -16,4 +16,8 @@ class Api::V1::InvoicesController < ApplicationController
     render json: Invoice.all
 >>>>>>> complete invoices index response endpoint
   end
+
+  def show
+    render json: Invoice.find(params[:id])
+  end
 end

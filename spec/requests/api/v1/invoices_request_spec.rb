@@ -47,10 +47,10 @@ describe 'Invoices API' do
       expect(raw_invoice['status']).to eq invoice.status
       expect(raw_invoice).to have_key('created_at')
       expect(raw_invoice['created_at']).to be_a String
-      expect(raw_invoice['created_at']).to eq invoice.created_at
+      expect(raw_invoice['created_at']).to eq invoice.created_at.strftime('%FT%T.%LZ')
       expect(raw_invoice).to have_key('updated_at')
       expect(raw_invoice['updated_at']).to be_a String
-      expect(raw_invoice['updated_at']).to eq invoice.updated_at
+      expect(raw_invoice['updated_at']).to eq invoice.updated_at.strftime('%FT%T.%LZ')
     end
   end
 
