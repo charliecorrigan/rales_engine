@@ -1,5 +1,5 @@
-class Api::V1::Items::RandomController < ApplicationController
+class Api::V1::InvoiceItems::RandomController < ApplicationController
   def show
-    @item = Item.order("RANDOM()").first
+    @invoice_item = InvoiceItem.order("RANDOM()").first
   end
 end
