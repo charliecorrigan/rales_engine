@@ -95,21 +95,21 @@ describe 'Items Find API' do
     end
 
     context '?merchant_id=' do
-      it 'returns the first invoice with that merchant_id' do
-        invoice = create(:item)
+      it 'returns the first item with that merchant_id' do
+        item = create(:item)
 
-        get "/api/v1/items/find?merchant_id=#{invoice.merchant_id}"
+        get "/api/v1/items/find?merchant_id=#{item.merchant_id}"
 
         raw_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_item["id"]).to eq(invoice.id)
+        expect(raw_item["id"]).to eq(item.id)
       end
 
       it 'returns error when no matching merchant id' do
-        invoice = create(:item)
+        item = create(:item)
 
-        get "/api/v1/items/find?merchant_id=#{invoice.merchant_id + 1}"
+        get "/api/v1/items/find?merchant_id=#{item.merchant_id + 1}"
 
         raw_item = JSON.parse(response.body)
 
@@ -118,21 +118,21 @@ describe 'Items Find API' do
     end
 
     context '?created_at=' do
-      it 'returns the first invoice with that created_at'do
-        invoice = create(:item)
+      it 'returns the first item with that created_at'do
+        item = create(:item)
 
-        get "/api/v1/items/find?created_at=#{invoice.created_at}"
+        get "/api/v1/items/find?created_at=#{item.created_at}"
 
         raw_item = JSON.parse(response.body)
 
-        expect(raw_item['id']).to eq invoice.id
+        expect(raw_item['id']).to eq item.id
 
         expect(response).to be_success
-        expect(raw_item["id"]).to eq(invoice.id)
+        expect(raw_item["id"]).to eq(item.id)
       end
 
       it 'returns error when not valid created_at' do
-        invoice = create(:item)
+        item = create(:item)
 
         get "/api/v1/items/find?created_at=2018-01-01 00:00:00"
 
@@ -143,28 +143,29 @@ describe 'Items Find API' do
     end
 
     context '?updated_at=' do
-      it 'returns the first invoice with that updated_at' do
-        invoice = create(:item)
+      it 'returns the first item with that updated_at' do
+        item = create(:item)
 
-        get "/api/v1/items/find?updated_at=#{invoice.updated_at}"
+        get "/api/v1/items/find?updated_at=#{item.updated_at}"
 
         raw_item = JSON.parse(response.body)
 
-        expect(raw_item['id']).to eq invoice.id
+        expect(raw_item['id']).to eq item.id
 
         expect(response).to be_success
-        expect(raw_item["id"]).to eq(invoice.id)
+        expect(raw_item["id"]).to eq(item.id)
+      end
+      
+      it 'returns error when not valid updated_at' do
+        item = create(:item)
+
+        get "/api/v1/items/find?updated_at=2018-01-01 00:00:00"
+
+        raw_item = JSON.parse(response.body)
+
+        expect(raw_item['error']).to eq 'not found'
       end
     end
 
-    it 'returns error when not valid updated_at' do
-      invoice = create(:item)
-
-      get "/api/v1/items/find?updated_at=2018-01-01 00:00:00"
-
-      raw_item = JSON.parse(response.body)
-
-      expect(raw_item['error']).to eq 'not found'
-    end
   end
 end
