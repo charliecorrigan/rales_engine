@@ -25,22 +25,22 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    context '?name=' do
-      it 'returns the invoice_item with that name' do
+    xcontext '?invoice_id=' do
+      it 'returns the first invoice with that invoice_id' do
         invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?name=#{invoice_item.name}"
+        get "/api/v1/invoice_items/find?invoice_id=#{invoice_item.invoice_id}"
 
         raw_invoice_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_invoice_item["id"]).to eq(invoice_item.id)
+        expect(raw_invoice_item["id"]).to eq(invoice.id)
       end
 
-      it 'returns error when no matching name' do
+      it 'returns error when no matching invoice_id' do
         invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?name=fake name"
+        get "/api/v1/invoice_items/find?invoice_id=#{invoice_item.invoice_id + 1}"
 
         raw_invoice_item = JSON.parse(response.body)
 
@@ -48,22 +48,22 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    context '?description=' do
-      it 'returns the invoice_item with that description' do
+    xcontext '?item_id=' do
+      it 'returns the first invoice with that item_id' do
         invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?description=#{invoice_item.description}"
+        get "/api/v1/invoice_items/find?item_id=#{invoice_item.item_id}"
 
         raw_invoice_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_invoice_item["id"]).to eq(invoice_item.id)
+        expect(raw_invoice_item["id"]).to eq(invoice.id)
       end
 
-      it 'returns error when no matching description' do
+      it 'returns error when no matching item_id' do
         invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?description=fake desc"
+        get "/api/v1/invoice_items/find?item_id=#{invoice_item.item_id + 1}"
 
         raw_invoice_item = JSON.parse(response.body)
 
@@ -71,7 +71,7 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    context '?unit_price=' do
+    xcontext '?unit_price=' do
       it 'returns the invoice_item with that unit_price' do
         invoice_item = create(:invoice_item)
 
@@ -94,22 +94,22 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    context '?merchant_id=' do
-      it 'returns the first invoice with that merchant_id' do
-        invoice = create(:invoice_item)
+    xcontext '?quantity=' do
+      it 'returns the invoice_item with that quantity' do
+        invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?merchant_id=#{invoice.merchant_id}"
+        get "/api/v1/invoice_items/find?quantity=#{invoice_item.quantity}"
 
         raw_invoice_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_invoice_item["id"]).to eq(invoice.id)
+        expect(raw_invoice_item["id"]).to eq(invoice_item.id)
       end
 
-      it 'returns error when no matching merchant id' do
-        invoice = create(:invoice_item)
+      it 'returns error when no matching quantity' do
+        invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?merchant_id=#{invoice.merchant_id + 1}"
+        get "/api/v1/invoice_items/find?quantity=#{invoice_item.quantity + 1}"
 
         raw_invoice_item = JSON.parse(response.body)
 
@@ -117,7 +117,7 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    context '?created_at=' do
+    xcontext '?created_at=' do
       it 'returns the first invoice with that created_at'do
         invoice = create(:invoice_item)
 
@@ -142,29 +142,30 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    context '?updated_at=' do
+    xcontext '?updated_at=' do
       it 'returns the first invoice with that updated_at' do
-        invoice = create(:invoice_item)
+        invoice_item = create(:invoice_item)
 
         get "/api/v1/invoice_items/find?updated_at=#{invoice.updated_at}"
 
         raw_invoice_item = JSON.parse(response.body)
 
-        expect(raw_invoice_item['id']).to eq invoice.id
+        expect(raw_invoice_item['id']).to eq invoice_item.id
 
         expect(response).to be_success
-        expect(raw_invoice_item["id"]).to eq(invoice.id)
+        expect(raw_invoice_item["id"]).to eq(invoice_item.id)
+      end
+
+      it 'returns error when not valid updated_at' do
+        invoice_item = create(:invoice_item)
+
+        get "/api/v1/invoice_items/find?updated_at=2018-01-01 00:00:00"
+
+        raw_invoice_item = JSON.parse(response.body)
+
+        expect(raw_invoice_item['error']).to eq 'not found'
       end
     end
 
-    it 'returns error when not valid updated_at' do
-      invoice = create(:invoice_item)
-
-      get "/api/v1/invoice_items/find?updated_at=2018-01-01 00:00:00"
-
-      raw_invoice_item = JSON.parse(response.body)
-
-      expect(raw_invoice_item['error']).to eq 'not found'
-    end
   end
 end
