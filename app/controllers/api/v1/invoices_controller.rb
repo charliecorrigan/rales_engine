@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 module Api
   module V1
     class InvoicesController < ApplicationController
@@ -9,5 +10,10 @@ module Api
         @invoice = Invoice.find(params[:id])
       end
     end
+=======
+class Api::V1::InvoicesController < ApplicationController
+  def index
+    render json: Invoice.all
+>>>>>>> complete invoices index response endpoint
   end
 end

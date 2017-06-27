@@ -13,10 +13,16 @@ describe 'Invoices API' do
       raw_invoice = raw_invoices.first
 
       expect(raw_invoices.count).to be 3
-      expect(raw_invoice).to have_key('name')
-      expect(raw_invoice['name']).to be_a String
-      expect(raw_invoice).to have_key('description')
-      expect(raw_invoice['description']).to be_a String
+      expect(raw_invoice).to have_key('customer_id')
+      expect(raw_invoice['customer_id']).to be_a Integer
+      expect(raw_invoice).to have_key('merchant_id')
+      expect(raw_invoice['merchant_id']).to be_a Integer
+      expect(raw_invoice).to have_key('status')
+      expect(raw_invoice['status']).to be_a String
+      expect(raw_invoice).to have_key('created_at')
+      expect(raw_invoice['created_at']).to be_a String
+      expect(raw_invoice).to have_key('updated_at')
+      expect(raw_invoice['updated_at']).to be_a String
     end
 
     it 'does not respond to /v2/'
