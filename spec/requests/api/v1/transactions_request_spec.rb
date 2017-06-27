@@ -26,14 +26,11 @@ describe "Transactions API" do
       transaction = JSON.parse(response.body)
 
       expect(transaction["id"]).to eq(id)
-      # expect(transaction).to have_key("invoice_id")
+      expect(transaction).to have_key("invoice_id")
       expect(transaction).to have_key("credit_card_number")
       expect(transaction).to have_key("result")
     end
   end
-
-    ##################################################
-  ##################################################
 
   context "GET /api/v1/transactions/find_all?credit_card_number=?" do
     it "sends a list of transactions with included credit_card_number" do
@@ -51,21 +48,23 @@ describe "Transactions API" do
     end
   end
 
-  # context "GET /api/v1/transactions/find_all?invoice_id=?" do
-  #   it "sends a list of transactions with included invoice_id" do
-  #     transaction1 = create(:transaction, invoice_id: "1234567812345678")
-  #     transaction2 = create(:transaction, invoice_id: "1234567812345678")
-  #     transaction3 = create(:transaction, invoice_id: "1111222233334444")
+  context "GET /api/v1/transactions/find_all?invoice_id=?" do
+    it "sends a list of transactions with included invoice_id" do
+      invoice1 = create(:invoice, id: 1)
+      invoice2 = create(:invoice, id: 2)
 
-  #     get "/api/v1/transactions/find_all?invoice_id=#{transaction1.invoice_id}"
+      transaction1 = create(:transaction, invoice_id: invoice1.id)
+      transaction2 = create(:transaction, invoice_id: invoice1.id)
+      transaction3 = create(:transaction, invoice_id: invoice2.id)
+      get "/api/v1/transactions/find_all?invoice_id=#{transaction1.invoice_id}"
 
-  #     expect(response).to be_success
+      expect(response).to be_success
 
-  #     transactions = JSON.parse(response.body)
+      transactions = JSON.parse(response.body)
 
-  #     expect(transactions.count).to eq(2)
-  #   end
-  # end
+      expect(transactions.count).to eq(2)
+    end
+  end
 
    context "GET /api/v1/transactions/find_all?result=?" do
     it "sends a list of transactions with included result" do
@@ -142,19 +141,19 @@ describe "Transactions API" do
     end
   end
 
-  # context "GET /api/v1/transactions/find?invoice_id=?" do
-  #   it "sends first transaction with included invoice_id" do
-  #     transaction1 = create(:transaction, invoice_id: "1234567812345678")
-  #     transaction2 = create(:transaction, invoice_id: "4444333322221111")
-  #     transaction3 = create(:transaction, invoice_id: "1111222233334444")
-  #     get "/api/v1/transactions/find?invoice_id=#{transaction1.invoice_id}"
+  context "GET /api/v1/transactions/find?invoice_id=?" do
+    it "sends first transaction with included invoice_id" do
+      transaction1 = create(:transaction)
+      transaction2 = create(:transaction)
+      transaction3 = create(:transaction)
+      get "/api/v1/transactions/find?invoice_id=#{transaction1.invoice_id}"
 
-  #     expect(response).to be_success
-  #     transaction_result = JSON.parse(response.body)
+      expect(response).to be_success
+      transaction_result = JSON.parse(response.body)
 
-  #     expect(transaction_result["id"]).to eq(transaction1.id)
-  #   end
-  # end
+      expect(transaction_result["id"]).to eq(transaction1.id)
+    end
+  end
 
   context "GET /api/v1/transactions/find?result=?" do
     it "sends first transaction with included result" do

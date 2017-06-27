@@ -1,10 +1,12 @@
 class Api::V1::Merchants::FindController < ApplicationController
   def index
-    render json: Merchant.where(find_merchant_params)
+    @merchants =  Merchant.where(find_merchant_params)
   end
 
   def show
-    render json: Merchant.find_by(find_merchant_params)
+    @merchant = Merchant.find_by(find_merchant_params)
+    render :json => { :error => 'not found' }, :status => 422 if @merchant.nil?
+    @merchant
   end
 
   private
