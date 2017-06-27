@@ -68,8 +68,17 @@ describe 'Invoices API' do
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
 
-      it 'returns returns empty when no primary key'
+      it 'returns nil when no primary key' do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find?id=#{invoice.id + 1}"
+
+        raw_invoice = JSON.parse(response.body)
+
+        expect(raw_invoice).to be_nil
+      end
     end
+
     context '?customer_id=' do
       it 'returns the first invoice with that customer_id' do
         invoice = create(:invoice)
@@ -81,7 +90,18 @@ describe 'Invoices API' do
         expect(response).to be_success
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
+
+      it 'returns nil when no customer id' do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find?customer_id=#{invoice.customer_id + 1}"
+
+        raw_invoice = JSON.parse(response.body)
+
+        expect(raw_invoice).to be_nil
+      end
     end
+
     context '?merchant_id=' do
       it 'returns the first invoice with that merchant_id' do
         invoice = create(:invoice)
@@ -93,7 +113,18 @@ describe 'Invoices API' do
         expect(response).to be_success
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
+
+      it 'returns nil when no merchant id' do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find?merchant_id=#{invoice.merchant_id + 1}"
+
+        raw_invoice = JSON.parse(response.body)
+
+        expect(raw_invoice).to be_nil
+      end
     end
+
     context '?status=' do
       it 'returns the first invoice with that status' do
         invoice = create(:invoice)
@@ -105,7 +136,18 @@ describe 'Invoices API' do
         expect(response).to be_success
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
+
+      it 'returns nil when no status' do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find?status=2"
+
+        raw_invoice = JSON.parse(response.body)
+
+        expect(raw_invoice).to be_nil
+      end
     end
+
     context '?created_at=' do
       it 'returns the first invoice with that created_at'do
         invoice = create(:invoice)
@@ -119,7 +161,18 @@ describe 'Invoices API' do
         expect(response).to be_success
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
+
+      it 'returns nil when not valid created_at' do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find?created_at=2018-01-01 00:00:00"
+
+        raw_invoice = JSON.parse(response.body)
+
+        expect(raw_invoice).to be_nil
+      end
     end
+
     context '?updated_at=' do
       it 'returns the first invoice with that updated_at' do
         invoice = create(:invoice)
@@ -133,6 +186,16 @@ describe 'Invoices API' do
         expect(response).to be_success
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
+    end
+
+    it 'returns nil when not valid updated_at' do
+      invoice = create(:invoice)
+
+      get "/api/v1/invoices/find?updated_at=2018-01-01 00:00:00"
+
+      raw_invoice = JSON.parse(response.body)
+
+      expect(raw_invoice).to be_nil
     end
   end
 
@@ -150,8 +213,10 @@ describe 'Invoices API' do
         expect(raw_invoices.count).to be 1
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
+
       it 'returns returns empty when no primary key'
     end
+
     context '?customer_id=' do
       it 'returns all invoices with that customer_id' do
         invoices = create_list(:invoice, 2)
@@ -166,6 +231,7 @@ describe 'Invoices API' do
         expect(raw_invoice["id"]).to eq(invoices.first.id)
       end
     end
+
     context '?merchant_id=' do
       it 'returns all invoices with that merchant_id' do
         invoices = create_list(:invoice, 3)
@@ -180,6 +246,7 @@ describe 'Invoices API' do
         expect(raw_invoice["id"]).to eq(invoices.first.id)
       end
     end
+
     context '?status=' do
       it 'returns all invoices with that status' do
         invoices = create_list(:invoice, 2)
@@ -194,12 +261,13 @@ describe 'Invoices API' do
         expect(raw_invoice["id"]).to eq(invoices.first.id)
       end
     end
+
     context '?created_at=' do
       it 'returns all invoices with that created_at' do
-        invoice = create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
-        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
-        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
-        create(:invoice, updated_at: "2013-03-09T08:57:21.000Z")
+        invoice = create(:invoice)
+        create(:invoice)
+        create(:invoice)
+        create(:invoice, created_at: "2013-03-09 08:57:21")
 
         get "/api/v1/invoices/find_all?created_at=#{invoice.created_at}"
 
@@ -211,14 +279,15 @@ describe 'Invoices API' do
         expect(raw_invoice["id"]).to eq(invoice.id)
       end
     end
+
     context '?updated_at=' do
       it 'returns all invoices with that updated_at' do
-        invoice = create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
-        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
-        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
-        create(:invoice, updated_at: "2013-03-09T08:57:21.000Z")
+        invoice = create(:invoice)
+        create(:invoice)
+        create(:invoice)
+        create(:invoice, updated_at: "2013-03-09 08:57:21")
 
-        get "/api/v1/invoices/find_all?created_at=#{invoice.created_at}"
+        get "/api/v1/invoices/find_all?updated_at=#{invoice.updated_at}"
 
         raw_invoices = JSON.parse(response.body)
         raw_invoice = raw_invoices.first
