@@ -14,4 +14,20 @@ describe "Customers API" do
       expect(customers.count).to eq(3)
     end
   end
+
+  context "GET /api/v1/customers/:id" do
+    it "sends a single customer by its id" do
+      id = create(:customer).id
+
+      get "/api/v1/customers/#{id}"
+
+      expect(result).to be_success
+
+      customer = JSON.parse(result.body)
+
+      expect(customer["id"]).to eq(id)
+      expect(customer).to have_key("first_name")
+      expect(customer).to have_key("last_name")
+    end
+  end
 end
