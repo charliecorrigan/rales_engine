@@ -21,9 +21,9 @@ describe "Customers API" do
 
       get "/api/v1/customers/#{id}"
 
-      expect(result).to be_success
+      expect(response).to be_success
 
-      customer = JSON.parse(result.body)
+      customer = JSON.parse(response.body)
 
       expect(customer["id"]).to eq(id)
       expect(customer).to have_key("first_name")
