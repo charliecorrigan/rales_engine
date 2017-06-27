@@ -1,10 +1,1 @@
-json.(@invoices) do |invoice|
-  json.(invoice,
-          :id,
-          :customer_id,
-          :merchant_id,
-          :status,
-          :created_at,
-          :updated_at
-        )
-end
+json.partial! 'api/v1/invoices/partials/invoice', collection: @invoices, as: :invoice
