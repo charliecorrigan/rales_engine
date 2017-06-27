@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Items API' do
   context 'GET /api/v1/items' do
-    it 'sends a list of all invoices' do
+    it 'sends a list of all items' do
       create_list(:item, 3)
 
       get '/api/v1/items'
@@ -17,11 +17,11 @@ describe 'Items API' do
       expect(raw_item).to have_key('name')
       expect(raw_item['name']).to be_a String
 
-      expect(raw_item).to have_key('unit_price')
-      expect(raw_item['unit_price']).to be_a Integer
-
       expect(raw_item).to have_key('description')
       expect(raw_item['description']).to be_a String
+
+      expect(raw_item).to have_key('unit_price')
+      expect(raw_item['unit_price']).to be_a Integer
 
       expect(raw_item).to have_key('merchant_id')
       expect(raw_item['merchant_id']).to be_a Integer
@@ -35,30 +35,31 @@ describe 'Items API' do
     it 'does not respond to /v2/'
   end
 
-  xcontext 'GET /api/v1/items/:id' do
-    it 'sends the information about one invoice' do
-      invoice = create(:item)
+  context 'GET /api/v1/items/:id' do
+    it 'sends the information about one item' do
+      item = create(:item)
 
-      get "/api/v1/items/#{invoice.id}"
+      get "/api/v1/items/#{item.id}"
 
       raw_item = JSON.parse(response.body)
 
-      expect(raw_item['id']).to eq invoice.id
-      expect(raw_item).to have_key('customer_id')
-      expect(raw_item['customer_id']).to be_a Integer
-      expect(raw_item['customer_id']).to eq invoice.customer_id
+      expect(raw_item['id']).to eq item.id
+      expect(raw_item).to have_key('name')
+      expect(raw_item['name']).to be_a String
+
+      expect(raw_item).to have_key('description')
+      expect(raw_item['description']).to be_a String
+
+      expect(raw_item).to have_key('unit_price')
+      expect(raw_item['unit_price']).to be_a Integer
+
       expect(raw_item).to have_key('merchant_id')
       expect(raw_item['merchant_id']).to be_a Integer
-      expect(raw_item['merchant_id']).to eq invoice.merchant_id
-      expect(raw_item).to have_key('status')
-      expect(raw_item['status']).to be_a String
-      expect(raw_item['status']).to eq invoice.status
+
       expect(raw_item).to have_key('created_at')
       expect(raw_item['created_at']).to be_a String
-      expect(raw_item['created_at']).to eq invoice.created_at
       expect(raw_item).to have_key('updated_at')
       expect(raw_item['updated_at']).to be_a String
-      expect(raw_item['updated_at']).to eq invoice.updated_at
     end
   end
 
