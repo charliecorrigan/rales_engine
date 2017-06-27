@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(version: 20170627214937) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "unit_price"
+    t.bigint "merchant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_items_on_merchant_id"
+  end
+
   create_table "merchants", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -45,5 +55,6 @@ ActiveRecord::Schema.define(version: 20170627214937) do
     t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
   end
 
+  add_foreign_key "items", "merchants"
   add_foreign_key "transactions", "invoices"
 end
