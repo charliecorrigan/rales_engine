@@ -25,7 +25,7 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    xcontext '?invoice_id=' do
+    context '?invoice_id=' do
       it 'returns the first invoice with that invoice_id' do
         invoice_item = create(:invoice_item)
 
@@ -34,7 +34,7 @@ describe 'Invoice_Items Find API' do
         raw_invoice_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_invoice_item["id"]).to eq(invoice.id)
+        expect(raw_invoice_item["id"]).to eq(invoice_item.id)
       end
 
       it 'returns error when no matching invoice_id' do
@@ -48,7 +48,7 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    xcontext '?item_id=' do
+    context '?item_id=' do
       it 'returns the first invoice with that item_id' do
         invoice_item = create(:invoice_item)
 
@@ -57,7 +57,7 @@ describe 'Invoice_Items Find API' do
         raw_invoice_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_invoice_item["id"]).to eq(invoice.id)
+        expect(raw_invoice_item["id"]).to eq(invoice_item.id)
       end
 
       it 'returns error when no matching item_id' do
@@ -71,7 +71,7 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    xcontext '?unit_price=' do
+    context '?unit_price=' do
       it 'returns the invoice_item with that unit_price' do
         invoice_item = create(:invoice_item)
 
@@ -94,7 +94,7 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    xcontext '?quantity=' do
+    context '?quantity=' do
       it 'returns the invoice_item with that quantity' do
         invoice_item = create(:invoice_item)
 
@@ -117,7 +117,7 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    xcontext '?created_at=' do
+    context '?created_at=' do
       it 'returns the first invoice with that created_at'do
         invoice = create(:invoice_item)
 
@@ -142,11 +142,11 @@ describe 'Invoice_Items Find API' do
       end
     end
 
-    xcontext '?updated_at=' do
+    context '?updated_at=' do
       it 'returns the first invoice with that updated_at' do
         invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?updated_at=#{invoice.updated_at}"
+        get "/api/v1/invoice_items/find?updated_at=#{invoice_item.updated_at}"
 
         raw_invoice_item = JSON.parse(response.body)
 
