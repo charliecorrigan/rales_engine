@@ -227,7 +227,8 @@ describe 'Invoices API' do
 
     context '?customer_id=' do
       it 'returns all invoices with that customer_id' do
-        invoices = create_list(:invoice, 2)
+        customer = create(:customer)
+        invoices = create_list(:invoice, 2, customer: customer)
 
         get "/api/v1/invoices/find_all?customer_id=#{invoices.first.customer_id}"
 
@@ -252,7 +253,8 @@ describe 'Invoices API' do
 
     context '?merchant_id=' do
       it 'returns all invoices with that merchant_id' do
-        invoices = create_list(:invoice, 3)
+        merchant = create(:merchant)
+        invoices = create_list(:invoice, 3, merchant: merchant)
 
         get "/api/v1/invoices/find_all?merchant_id=#{invoices.first.merchant_id}"
 
