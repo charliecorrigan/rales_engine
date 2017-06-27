@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Invoice_Items API' do
   context 'GET /api/v1/invoice_items' do
     it 'sends a list of all items' do
-      create_list(:invoice_items, 3)
+      create_list(:invoice_item, 3)
 
       get '/api/v1/invoice_items'
 
@@ -13,8 +13,6 @@ describe 'Invoice_Items API' do
       raw_invoice_item = raw_invoice_items.first
 
       expect(raw_invoice_items.count).to be 3
-
-      id,item_id,invoice_id,quantity,unit_price,created_at,updated_at
 
       expect(raw_invoice_item).to have_key('item_id')
       expect(raw_invoice_item['item_id']).to be_a Integer
@@ -37,7 +35,7 @@ describe 'Invoice_Items API' do
     it 'does not respond to /v2/'
   end
 
-  xcontext 'GET /api/v1/invoice_items/:id' do
+  context 'GET /api/v1/invoice_items/:id' do
     it 'sends the information about one invoice_item' do
       invoice_item = create(:invoice_item)
 
