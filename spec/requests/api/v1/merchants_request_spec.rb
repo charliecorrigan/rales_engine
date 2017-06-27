@@ -30,9 +30,6 @@ describe "Merchants API" do
     end
   end
 
-  ##################################################
-  ##################################################
-
   context "GET /api/v1/merchants/find_all?name=?" do
     it "sends a list of merchants with included name" do
       merchant1 = create(:merchant, name: "Bob Store")
