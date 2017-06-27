@@ -62,17 +62,4 @@ describe 'Items API' do
       expect(raw_item['updated_at']).to be_a String
     end
   end
-
-  xcontext 'GET /api/v1/invoice/random' do
-    it 'returns a random invoice' do
-      invoices = create_list(:item, 3)
-      ids = invoices.map(&:id)
-
-      get "/api/v1/items/random"
-
-      raw_item = JSON.parse(response.body)
-
-      expect(ids.include?(raw_item['id'])).to be true
-    end
-  end
 end
