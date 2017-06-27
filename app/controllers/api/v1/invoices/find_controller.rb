@@ -3,10 +3,13 @@ module Api
     module Invoices
       class FindController < ApplicationController
         def index
-          render json: Invoice.where(find_invoice_params)
+          @invoices = Invoice.where(find_invoice_params)
         end
+
         def show
-          render json: Invoice.find_by(find_invoice_params)
+          @invoice = Invoice.find_by(find_invoice_params)
+          render :json => { :error => 'not found' }, :status => 422 if @invoice.nil?
+          @invoice
         end
 
         private

@@ -75,7 +75,7 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice).to be_nil
+        expect(raw_invoice['error']).to eq 'not found'
       end
     end
 
@@ -98,7 +98,7 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice).to be_nil
+        expect(raw_invoice['error']).to eq 'not found'
       end
     end
 
@@ -121,7 +121,7 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice).to be_nil
+        expect(raw_invoice['error']).to eq 'not found'
       end
     end
 
@@ -144,7 +144,7 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice).to be_nil
+        expect(raw_invoice['error']).to eq 'not found'
       end
     end
 
@@ -169,7 +169,7 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice).to be_nil
+        expect(raw_invoice['error']).to eq 'not found'
       end
     end
 
@@ -195,7 +195,7 @@ describe 'Invoices API' do
 
       raw_invoice = JSON.parse(response.body)
 
-      expect(raw_invoice).to be_nil
+      expect(raw_invoice['error']).to eq 'not found'
     end
   end
 
