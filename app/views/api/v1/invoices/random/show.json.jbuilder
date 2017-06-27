@@ -1,8 +1,1 @@
-json.(@invoice,
-        :id,
-        :customer_id,
-        :merchant_id,
-        :status,
-        :created_at,
-        :updated_at
-      )
+json.partial! 'api/v1/invoices/partials/invoice', invoice: @invoice 
