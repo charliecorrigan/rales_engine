@@ -16,7 +16,7 @@ describe "Customers API" do
   end
 
   context "GET /api/v1/customers/:id" do
-    xit "sends a single customer by its id" do
+    it "sends a single customer by its id" do
       id = create(:customer).id
 
       get "/api/v1/customers/#{id}"
