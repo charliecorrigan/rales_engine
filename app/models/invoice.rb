@@ -1,5 +1,4 @@
 class Invoice < ApplicationRecord
-  has_many :transactions
   enum status: [:shipped]
 
   def created_at

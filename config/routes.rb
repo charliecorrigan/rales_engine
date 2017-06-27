@@ -5,33 +5,26 @@ Rails.application.routes.draw do
         get '/find_all', to: "find#index"
         get '/find', to: "find#show"
       end
-      resources :customers, only: [:index, :show]
 
       namespace :merchants do
         get '/find_all', to: "find#index"
         get '/find', to: "find#show"
       end
-      resources :merchants, only: [:index, :show]
 
       namespace :transactions do
         get '/find_all', to: "find#index"
         get '/find', to: "find#show"
       end
+
       resources :transactions, only: [:index, :show]
+      resources :merchants, only: [:index, :show]
+      resources :customers, only: [:index, :show]
 
       namespace :invoices do
         get "/find", to: "find#show"
         get "/find_all", to: "find#index"
-        get "/random", to: "random#show"
       end
       resources :invoices, only: [:index, :show]
-
-      namespace :items do
-        get "/find", to: "find#show"
-        get "/find_all", to: "find#index"
-        get "/random", to: "random#show"
-      end
-      resources :items, only: [:index, :show]
     end
   end
 end
