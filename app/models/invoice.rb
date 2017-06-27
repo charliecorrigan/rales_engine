@@ -3,10 +3,9 @@ class Invoice < ApplicationRecord
 
   def created_at
     attributes['created_at'].strftime('%F %T')
-    # Time.parse(attributes['created_at'].to_s)
   end
 
   def updated_at
-    attributes['updated_at'].strftime('%FT%T.%LZ')
+    attributes['updated_at'].strftime('%F %T')
   end
 end
