@@ -63,23 +63,23 @@ describe 'Items API' do
     end
   end
 
-  xcontext 'GET /api/v1/items/find' do
+  context 'GET /api/v1/items/find' do
     context '?id=' do
-      it 'returns the invoice with that primary key' do
-        invoice = create(:item)
+      it 'returns the item with that primary key' do
+        item = create(:item)
 
-        get "/api/v1/items/find?id=#{invoice.id}"
+        get "/api/v1/items/find?id=#{item.id}"
 
         raw_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_item["id"]).to eq(invoice.id)
+        expect(raw_item["id"]).to eq(item.id)
       end
 
-      it 'returns nil when no primary key' do
-        invoice = create(:item)
+      it 'returns error when no matching primary key' do
+        item = create(:item)
 
-        get "/api/v1/items/find?id=#{invoice.id + 1}"
+        get "/api/v1/items/find?id=#{item.id + 1}"
 
         raw_item = JSON.parse(response.body)
 
@@ -87,22 +87,68 @@ describe 'Items API' do
       end
     end
 
-    context '?customer_id=' do
-      it 'returns the first invoice with that customer_id' do
-        invoice = create(:item)
+    context '?name=' do
+      it 'returns the item with that name' do
+        item = create(:item)
 
-        get "/api/v1/items/find?customer_id=#{invoice.customer_id}"
+        get "/api/v1/items/find?name=#{item.name}"
 
         raw_item = JSON.parse(response.body)
 
         expect(response).to be_success
-        expect(raw_item["id"]).to eq(invoice.id)
+        expect(raw_item["id"]).to eq(item.id)
       end
 
-      it 'returns nil when no customer id' do
-        invoice = create(:item)
+      it 'returns error when no matching name' do
+        item = create(:item)
 
-        get "/api/v1/items/find?customer_id=#{invoice.customer_id + 1}"
+        get "/api/v1/items/find?name=fake name"
+
+        raw_item = JSON.parse(response.body)
+
+        expect(raw_item['error']).to eq 'not found'
+      end
+    end
+
+    context '?description=' do
+      it 'returns the item with that description' do
+        item = create(:item)
+
+        get "/api/v1/items/find?description=#{item.description}"
+
+        raw_item = JSON.parse(response.body)
+
+        expect(response).to be_success
+        expect(raw_item["id"]).to eq(item.id)
+      end
+
+      it 'returns error when no matching description' do
+        item = create(:item)
+
+        get "/api/v1/items/find?description=fake desc"
+
+        raw_item = JSON.parse(response.body)
+
+        expect(raw_item['error']).to eq 'not found'
+      end
+    end
+
+    context '?unit_price=' do
+      it 'returns the item with that unit_price' do
+        item = create(:item)
+
+        get "/api/v1/items/find?unit_price=#{item.unit_price}"
+
+        raw_item = JSON.parse(response.body)
+
+        expect(response).to be_success
+        expect(raw_item["id"]).to eq(item.id)
+      end
+
+      it 'returns error when no matching unit_price' do
+        item = create(:item)
+
+        get "/api/v1/items/find?unit_price=#{item.unit_price + 1}"
 
         raw_item = JSON.parse(response.body)
 
@@ -122,33 +168,10 @@ describe 'Items API' do
         expect(raw_item["id"]).to eq(invoice.id)
       end
 
-      it 'returns nil when no merchant id' do
+      it 'returns error when no matching merchant id' do
         invoice = create(:item)
 
         get "/api/v1/items/find?merchant_id=#{invoice.merchant_id + 1}"
-
-        raw_item = JSON.parse(response.body)
-
-        expect(raw_item['error']).to eq 'not found'
-      end
-    end
-
-    context '?status=' do
-      it 'returns the first invoice with that status' do
-        invoice = create(:item)
-
-        get "/api/v1/items/find?status=#{invoice.status}"
-
-        raw_item = JSON.parse(response.body)
-
-        expect(response).to be_success
-        expect(raw_item["id"]).to eq(invoice.id)
-      end
-
-      it 'returns nil when no status' do
-        invoice = create(:item)
-
-        get "/api/v1/items/find?status=2"
 
         raw_item = JSON.parse(response.body)
 
@@ -170,7 +193,7 @@ describe 'Items API' do
         expect(raw_item["id"]).to eq(invoice.id)
       end
 
-      it 'returns nil when not valid created_at' do
+      it 'returns error when not valid created_at' do
         invoice = create(:item)
 
         get "/api/v1/items/find?created_at=2018-01-01 00:00:00"
@@ -196,7 +219,7 @@ describe 'Items API' do
       end
     end
 
-    it 'returns nil when not valid updated_at' do
+    it 'returns error when not valid updated_at' do
       invoice = create(:item)
 
       get "/api/v1/items/find?updated_at=2018-01-01 00:00:00"
