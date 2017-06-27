@@ -2,6 +2,9 @@ class Invoice < ApplicationRecord
   belongs_to :merchant
   belongs_to :customer
   has_many :transactions
+  has_many :invoice_items
+  belongs_to :customer
+  belongs_to :merchant
   enum status: [:shipped]
 
   def created_at
