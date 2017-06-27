@@ -48,10 +48,10 @@ describe 'Invoices API' do
       expect(raw_invoice['status']).to eq invoice.status
       expect(raw_invoice).to have_key('created_at')
       expect(raw_invoice['created_at']).to be_a String
-      expect(raw_invoice['created_at']).to eq invoice.created_at.strftime('%FT%T.%LZ')
+      expect(raw_invoice['created_at']).to eq invoice.created_at
       expect(raw_invoice).to have_key('updated_at')
       expect(raw_invoice['updated_at']).to be_a String
-      expect(raw_invoice['updated_at']).to eq invoice.updated_at.strftime('%FT%T.%LZ')
+      expect(raw_invoice['updated_at']).to eq invoice.updated_at
     end
   end
 
@@ -108,7 +108,7 @@ describe 'Invoices API' do
     end
     context '?created_at=' do
       it 'returns the first invoice with that created_at'do
-        invoice = create(:invoice, created_at: "2012-03-09T08:57:21.000Z")
+        invoice = create(:invoice)
 
         get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
 
@@ -122,7 +122,7 @@ describe 'Invoices API' do
     end
     context '?updated_at=' do
       it 'returns the first invoice with that updated_at' do
-        invoice = create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
+        invoice = create(:invoice)
 
         get "/api/v1/invoices/find?updated_at=#{invoice.updated_at}"
 
@@ -138,23 +138,95 @@ describe 'Invoices API' do
 
   context 'GET /api/v1/invoices/find_all' do
     context '?id=' do
-      it 'returns all invoices with that primary key'
+      it 'returns all invoices with that primary key' do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find_all?id=#{invoice.id}"
+
+        raw_invoices = JSON.parse(response.body)
+        raw_invoice = raw_invoices.first
+
+        expect(response).to be_success
+        expect(raw_invoices.count).to be 1
+        expect(raw_invoice["id"]).to eq(invoice.id)
+      end
       it 'returns returns empty when no primary key'
     end
     context '?customer_id=' do
-      it 'returns all invoices with that customer_id'
+      it 'returns all invoices with that customer_id' do
+        invoices = create_list(:invoice, 2)
+
+        get "/api/v1/invoices/find_all?customer_id=#{invoices.first.customer_id}"
+
+        raw_invoices = JSON.parse(response.body)
+        raw_invoice = raw_invoices.first
+
+        expect(response).to be_success
+        expect(raw_invoices.count).to be 2
+        expect(raw_invoice["id"]).to eq(invoices.first.id)
+      end
     end
     context '?merchant_id=' do
-      it 'returns all invoices with that merchant_id'
+      it 'returns all invoices with that merchant_id' do
+        invoices = create_list(:invoice, 3)
+
+        get "/api/v1/invoices/find_all?merchant_id=#{invoices.first.merchant_id}"
+
+        raw_invoices = JSON.parse(response.body)
+        raw_invoice = raw_invoices.first
+
+        expect(response).to be_success
+        expect(raw_invoices.count).to be 3
+        expect(raw_invoice["id"]).to eq(invoices.first.id)
+      end
     end
     context '?status=' do
-      it 'returns all invoices with that status'
+      it 'returns all invoices with that status' do
+        invoices = create_list(:invoice, 2)
+
+        get "/api/v1/invoices/find_all?status=#{invoices.first.status}"
+
+        raw_invoices = JSON.parse(response.body)
+        raw_invoice = raw_invoices.first
+
+        expect(response).to be_success
+        expect(raw_invoices.count).to be 2
+        expect(raw_invoice["id"]).to eq(invoices.first.id)
+      end
     end
     context '?created_at=' do
-      it 'returns all invoices with that created_at'
+      it 'returns all invoices with that created_at' do
+        invoice = create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
+        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
+        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
+        create(:invoice, updated_at: "2013-03-09T08:57:21.000Z")
+
+        get "/api/v1/invoices/find_all?created_at=#{invoice.created_at}"
+
+        raw_invoices = JSON.parse(response.body)
+        raw_invoice = raw_invoices.first
+
+        expect(response).to be_success
+        expect(raw_invoices.count).to be 3
+        expect(raw_invoice["id"]).to eq(invoice.id)
+      end
     end
     context '?updated_at=' do
-      it 'returns all invoices with that updated_at'
+      it 'returns all invoices with that updated_at' do
+        invoice = create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
+        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
+        create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
+        create(:invoice, updated_at: "2013-03-09T08:57:21.000Z")
+
+        get "/api/v1/invoices/find_all?created_at=#{invoice.created_at}"
+
+        raw_invoices = JSON.parse(response.body)
+        raw_invoice = raw_invoices.first
+
+        expect(response).to be_success
+        expect(raw_invoices.count).to be 3
+        expect(raw_invoice["id"]).to eq(invoice.id)
+      end
     end
   end
 end

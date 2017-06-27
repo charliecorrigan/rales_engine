@@ -2,6 +2,8 @@ module Api
   module V1
     module Invoices
       class FindController < ApplicationController
+        def index
+        end
         def show
           render json: Invoice.find_by(find_invoice_params)
         end
