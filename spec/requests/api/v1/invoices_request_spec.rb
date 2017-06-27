@@ -107,8 +107,8 @@ describe 'Invoices API' do
       end
     end
     context '?created_at=' do
-      xit 'returns the first invoice with that created_at'do
-        invoice = create(:invoice)
+      it 'returns the first invoice with that created_at'do
+        invoice = create(:invoice, created_at: "2012-03-09T08:57:21.000Z")
 
         get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
 
@@ -121,8 +121,8 @@ describe 'Invoices API' do
       end
     end
     context '?updated_at=' do
-      xit 'returns the first invoice with that updated_at' do
-        invoice = create(:invoice)
+      it 'returns the first invoice with that updated_at' do
+        invoice = create(:invoice, updated_at: "2012-03-09T08:57:21.000Z")
 
         get "/api/v1/invoices/find?updated_at=#{invoice.updated_at}"
 
