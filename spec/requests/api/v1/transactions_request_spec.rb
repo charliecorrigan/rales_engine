@@ -16,7 +16,7 @@ describe "Transactions API" do
   end
 
   context "GET /api/v1/transactions/:id" do
-    xit "sends a single transaction by id" do
+    it "sends a single transaction by id" do
       id = create(:transaction).id
 
       get "/api/v1/transactions/#{:id}"
