@@ -15,6 +15,14 @@ namespace :import_csv do
 
     puts "Merchant seed complete"
 
+    items_text = File.read('../sales_engine/data/items.csv')
+    csv = CSV.parse(items_text, :headers => true)
+    csv.each do |row|
+      Item.create!(row.to_hash)
+    end
+
+    puts "Item seed complete"
+
     customers_text = File.read('../sales_engine/data/customers.csv')
     csv = CSV.parse(customers_text, :headers => true)
     csv.each do |row|
@@ -23,13 +31,6 @@ namespace :import_csv do
 
     puts "Customer seed complete"
 
-    # invoice_items_text = File.read('../sales_engine/data/invoice_items.csv')
-    # csv = CSV.parse(invoice_items_text, :headers => true)
-    # csv.each do |row|
-    #   InvoiceItem.create!(row.to_hash)
-    # end
-
-    # puts "InvoiceItem seed complete"
 
     invoices_text = File.read('../sales_engine/data/invoices.csv')
     csv = CSV.parse(invoices_text, :headers => true)
@@ -39,13 +40,13 @@ namespace :import_csv do
 
     puts "Invoice seed complete"
 
-    # items_text = File.read('../sales_engine/data/items.csv')
-    # csv = CSV.parse(items_text, :headers => true)
-    # csv.each do |row|
-    #   Item.create!(row.to_hash)
-    # end
+    invoice_items_text = File.read('../sales_engine/data/invoice_items.csv')
+    csv = CSV.parse(invoice_items_text, :headers => true)
+    csv.each do |row|
+      InvoiceItem.create!(row.to_hash)
+    end
 
-    # puts "Item seed complete"
+    puts "InvoiceItem seed complete"
 
     transactions_text = File.read('../sales_engine/data/transactions.csv')
     csv = CSV.parse(transactions_text, :headers => true)
@@ -62,6 +63,4 @@ namespace :import_csv do
 
     puts "Transaction seed complete"
   end
-
-
 end 
