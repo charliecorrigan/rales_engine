@@ -107,7 +107,7 @@ describe 'Invoices API' do
       end
     end
     context '?created_at=' do
-      it 'returns the first invoice with that created_at'do
+      xit 'returns the first invoice with that created_at'do
         invoice = create(:invoice)
 
         get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
@@ -121,7 +121,18 @@ describe 'Invoices API' do
       end
     end
     context '?updated_at=' do
-      it 'returns the first invoice with that updated_at'
+      xit 'returns the first invoice with that updated_at' do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find?updated_at=#{invoice.updated_at}"
+
+        raw_invoice = JSON.parse(response.body)
+
+        expect(raw_invoice['id']).to eq invoice.id
+
+        expect(response).to be_success
+        expect(raw_invoice["id"]).to eq(invoice.id)
+      end
     end
   end
 

@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> skip failing date search spec
 module Api
   module V1
     class InvoicesController < ApplicationController
       def index
+<<<<<<< HEAD
         @invoices = Invoice.all
       end
 
@@ -16,8 +20,14 @@ class Api::V1::InvoicesController < ApplicationController
     render json: Invoice.all
 >>>>>>> complete invoices index response endpoint
   end
+=======
+        render json: Invoice.all
+      end
+>>>>>>> skip failing date search spec
 
-  def show
-    render json: Invoice.find(params[:id])
+      def show
+        render json: Invoice.find(params[:id])
+      end
+    end
   end
 end
