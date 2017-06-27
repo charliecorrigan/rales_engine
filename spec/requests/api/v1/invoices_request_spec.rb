@@ -64,22 +64,8 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice['id']).to eq invoice.id
-        expect(raw_invoice).to have_key('customer_id')
-        expect(raw_invoice['customer_id']).to be_a Integer
-        expect(raw_invoice['customer_id']).to eq invoice.customer_id
-        expect(raw_invoice).to have_key('merchant_id')
-        expect(raw_invoice['merchant_id']).to be_a Integer
-        expect(raw_invoice['merchant_id']).to eq invoice.merchant_id
-        expect(raw_invoice).to have_key('status')
-        expect(raw_invoice['status']).to be_a String
-        expect(raw_invoice['status']).to eq invoice.status
-        expect(raw_invoice).to have_key('created_at')
-        expect(raw_invoice['created_at']).to be_a String
-        expect(raw_invoice['created_at']).to eq invoice.created_at.strftime('%FT%T.%LZ')
-        expect(raw_invoice).to have_key('updated_at')
-        expect(raw_invoice['updated_at']).to be_a String
-        expect(raw_invoice['updated_at']).to eq invoice.updated_at.strftime('%FT%T.%LZ')
+        expect(response).to be_success
+        expect(raw_invoice["id"]).to eq(invoice.id)
       end
 
       it 'returns returns empty when no primary key'
@@ -92,22 +78,8 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice['id']).to eq invoice.id
-        expect(raw_invoice).to have_key('customer_id')
-        expect(raw_invoice['customer_id']).to be_a Integer
-        expect(raw_invoice['customer_id']).to eq invoice.customer_id
-        expect(raw_invoice).to have_key('merchant_id')
-        expect(raw_invoice['merchant_id']).to be_a Integer
-        expect(raw_invoice['merchant_id']).to eq invoice.merchant_id
-        expect(raw_invoice).to have_key('status')
-        expect(raw_invoice['status']).to be_a String
-        expect(raw_invoice['status']).to eq invoice.status
-        expect(raw_invoice).to have_key('created_at')
-        expect(raw_invoice['created_at']).to be_a String
-        expect(raw_invoice['created_at']).to eq invoice.created_at.strftime('%FT%T.%LZ')
-        expect(raw_invoice).to have_key('updated_at')
-        expect(raw_invoice['updated_at']).to be_a String
-        expect(raw_invoice['updated_at']).to eq invoice.updated_at.strftime('%FT%T.%LZ')
+        expect(response).to be_success
+        expect(raw_invoice["id"]).to eq(invoice.id)
       end
     end
     context '?merchant_id=' do
@@ -118,22 +90,8 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice['id']).to eq invoice.id
-        expect(raw_invoice).to have_key('customer_id')
-        expect(raw_invoice['customer_id']).to be_a Integer
-        expect(raw_invoice['customer_id']).to eq invoice.customer_id
-        expect(raw_invoice).to have_key('merchant_id')
-        expect(raw_invoice['merchant_id']).to be_a Integer
-        expect(raw_invoice['merchant_id']).to eq invoice.merchant_id
-        expect(raw_invoice).to have_key('status')
-        expect(raw_invoice['status']).to be_a String
-        expect(raw_invoice['status']).to eq invoice.status
-        expect(raw_invoice).to have_key('created_at')
-        expect(raw_invoice['created_at']).to be_a String
-        expect(raw_invoice['created_at']).to eq invoice.created_at.strftime('%FT%T.%LZ')
-        expect(raw_invoice).to have_key('updated_at')
-        expect(raw_invoice['updated_at']).to be_a String
-        expect(raw_invoice['updated_at']).to eq invoice.updated_at.strftime('%FT%T.%LZ')
+        expect(response).to be_success
+        expect(raw_invoice["id"]).to eq(invoice.id)
       end
     end
     context '?status=' do
@@ -144,26 +102,23 @@ describe 'Invoices API' do
 
         raw_invoice = JSON.parse(response.body)
 
-        expect(raw_invoice['id']).to eq invoice.id
-        expect(raw_invoice).to have_key('customer_id')
-        expect(raw_invoice['customer_id']).to be_a Integer
-        expect(raw_invoice['customer_id']).to eq invoice.customer_id
-        expect(raw_invoice).to have_key('merchant_id')
-        expect(raw_invoice['merchant_id']).to be_a Integer
-        expect(raw_invoice['merchant_id']).to eq invoice.merchant_id
-        expect(raw_invoice).to have_key('status')
-        expect(raw_invoice['status']).to be_a String
-        expect(raw_invoice['status']).to eq invoice.status
-        expect(raw_invoice).to have_key('created_at')
-        expect(raw_invoice['created_at']).to be_a String
-        expect(raw_invoice['created_at']).to eq invoice.created_at.strftime('%FT%T.%LZ')
-        expect(raw_invoice).to have_key('updated_at')
-        expect(raw_invoice['updated_at']).to be_a String
-        expect(raw_invoice['updated_at']).to eq invoice.updated_at.strftime('%FT%T.%LZ')
+        expect(response).to be_success
+        expect(raw_invoice["id"]).to eq(invoice.id)
       end
     end
     context '?created_at=' do
-      it 'returns the first invoice with that created_at'
+      it 'returns the first invoice with that created_at'do
+        invoice = create(:invoice)
+
+        get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
+
+        raw_invoice = JSON.parse(response.body)
+
+        expect(raw_invoice['id']).to eq invoice.id
+
+        expect(response).to be_success
+        expect(raw_invoice["id"]).to eq(invoice.id)
+      end
     end
     context '?updated_at=' do
       it 'returns the first invoice with that updated_at'
