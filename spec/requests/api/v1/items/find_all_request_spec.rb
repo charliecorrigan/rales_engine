@@ -101,7 +101,8 @@ describe 'Items Find All API' do
 
     context '?merchant_id=' do
       it 'returns all items with that merchant_id' do
-        items = create_list(:item, 3)
+        merchant = create(:merchant)
+        items = create_list(:item, 3, merchant: merchant)
 
         get "/api/v1/items/find_all?merchant_id=#{items.first.merchant_id}"
 
