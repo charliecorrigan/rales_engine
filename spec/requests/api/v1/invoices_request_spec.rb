@@ -3,8 +3,22 @@ require 'rails_helper'
 describe 'Invoices API' do
   context 'GET /api/v1/invoices' do
     it 'sends a list of all invoices' do
+      create_list(:invoice, 3)
 
+      get '/api/v1/invoices'
+
+      expect(response).to be_success
+
+      raw_invoices = JSON.parse(response.body)
+      raw_invoice = raw_invoices.first
+
+      expect(raw_invoices.count).to be 3
+      expect(raw_invoice).to have_key('name')
+      expect(raw_invoice['name']).to be_a String
+      expect(raw_invoice).to have_key('description')
+      expect(raw_invoice['description']).to be_a String
     end
+
     it 'does not respond to /v2/'
   end
 
