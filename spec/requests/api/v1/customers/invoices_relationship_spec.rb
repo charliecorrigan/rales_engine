@@ -4,7 +4,7 @@ describe 'Customers Invoices API' do
   let(:customer) { create(:customer) }
   let!(:invoices) { create_list(:invoice, 3, customer: customer)}
   let!(:other_invoice) {create(:invoice)}
-  
+
   context 'GET /api/v1/customers/:id/invoices' do
     it 'returns a collection of invoices for that customer' do
       get "/api/v1/customers/#{customer.id}/invoices"
