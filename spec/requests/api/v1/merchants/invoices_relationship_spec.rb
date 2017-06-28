@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Merchants Invoices API' do
   let(:merchant) { create(:merchant) }
   let!(:invoices) { create_list(:invoice, 3, merchant: merchant)}
+  let!(:other_invoice) {create(:invoice)}
   context 'GET /api/v1/merchants/:id/invoices' do
     it 'returns a collection of invoices for that merchant' do
       get "/api/v1/merchants/#{merchant.id}/invoices"
@@ -20,7 +21,7 @@ describe 'Merchants Invoices API' do
       expect(raw_invoice['merchant_id']).to be_a Integer
       expect(raw_invoice).to have_key('status')
       expect(raw_invoice['status']).to be_a String
-      
+
       expect(raw_invoice['merchant_id']).to eq merchant.id
     end
   end

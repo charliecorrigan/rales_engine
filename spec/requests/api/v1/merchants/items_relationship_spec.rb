@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Merchants Items API' do
   let(:merchant) { create(:merchant) }
   let!(:items) { create_list(:item, 3, merchant: merchant)}
+  let!(:other_item) { create(:item) }
   context 'GET /api/v1/merchants/:id/items' do
     it 'returns a collection of items for that merchant' do
       get "/api/v1/merchants/#{merchant.id}/items"
