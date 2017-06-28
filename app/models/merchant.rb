@@ -34,4 +34,10 @@ class Merchant < ApplicationRecord
               .pluck(:id)
     ).group("customers.id")
   end
+
+  def favorite_customer
+    select("customers.*")
+    .joins(:invoices)
+    .joins(:customers)
+  end
 end
