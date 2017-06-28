@@ -34,4 +34,14 @@ class Merchant < ApplicationRecord
               .pluck(:id)
     ).group("customers.id")
   end
+
+  def favorite_customer
+    customers
+    .select("customers.*")
+    .joins(invoices: :transactions)
+    .merge(Transaction.successful)
+    .group(:id)
+    .order("count(transactions.id) DESC")
+    .first
+  end
 end
