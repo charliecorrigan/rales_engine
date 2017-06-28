@@ -14,4 +14,11 @@ class Invoice < ApplicationRecord
   def updated_at
     attributes['updated_at'].strftime('%F %T')
   end
+
+  # def self.pending_invoices
+  #   joins(:transactions)
+  #    .where(:transactions:{result:'success'})
+  #    .
+  #
+  # end
 end

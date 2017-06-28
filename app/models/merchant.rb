@@ -3,6 +3,7 @@ class Merchant < ApplicationRecord
 
   has_many :invoices
   has_many :customers, through: :invoices
+  has_many :transactions, through: :invoices
 
   has_many :invoice_items, through: :invoices
 
@@ -20,4 +21,17 @@ class Merchant < ApplicationRecord
                                 total_revenue
   end
 
+  # has_many :invoice_items, through: :invoices
+
+  def self.customers_with_pending_invoices(id)
+    select("customers.*")
+    .where("merchants.id = ?", id)
+    .joins(:customers)
+    .where("customers.id NOT IN (?)",
+      Customer.joins(:transactions)
+              .select("customers.id")
+              .where("transactions.result = ?", 'success')
+              .pluck(:id)
+    ).group("customers.id")
+  end
 end
