@@ -39,16 +39,32 @@ class Merchant < ApplicationRecord
     .take(quantity.to_i)
   end
 
-  def self.customers_with_pending_invoices(id)
-    select("customers.*")
-    .where("merchants.id = ?", id)
-    .joins(:customers)
-    .where("customers.id NOT IN (?)",
+  def customers_with_pending_invoices
+    customers
+    .where.not("customers.id IN (?)",
       Customer.joins(:transactions)
               .select("customers.id")
               .where("transactions.result = ?", 'success')
               .pluck(:id)
     ).group("customers.id")
+
+    # .merge(Transaction.not_successful)
+
+    # select("customers.*")
+    # .where("merchants.id = ?", id)
+    # .joins(customers: :transactions)
+    # .where.not(customers: {
+    #   transactions: {
+    #     result: 'success'
+    #   }
+    # }).group("customers.id")
+    # select("customers.*")
+    # .where("merchants.id = ?", id)
+    # .joins(:customers)
+    # .where(
+    #   Customer.joins(:transactions)
+    #           .where("transactions.result = ?", 'success').exists.not
+    # ).group("customers.id")
   end
 
   def favorite_customer
