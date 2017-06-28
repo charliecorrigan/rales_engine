@@ -1,4 +1,4 @@
-module UnitPrice
+module Centable
   extend ActiveSupport::Concern
 
   def unit_price
@@ -9,6 +9,6 @@ module UnitPrice
 
   private
     def convert_to_cents
-      params["unit_price"].to_f * 100
+      params[:unit_price].to_f * 100
     end
 end

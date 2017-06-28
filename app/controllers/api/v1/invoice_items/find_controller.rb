@@ -1,5 +1,5 @@
 class Api::V1::InvoiceItems::FindController < ApplicationController
-  include UnitPrice
+  include Centable
 
   def index
     @invoice_items = InvoiceItem.where(find_invoice_item_params)

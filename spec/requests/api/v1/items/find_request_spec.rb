@@ -86,7 +86,7 @@ describe 'Items Find API' do
       it 'returns error when no matching unit_price' do
         item = create(:item)
 
-        get "/api/v1/items/find?unit_price=#{item.unit_price + 1}"
+        get "/api/v1/items/find?unit_price=0.00"
 
         raw_item = JSON.parse(response.body)
 
