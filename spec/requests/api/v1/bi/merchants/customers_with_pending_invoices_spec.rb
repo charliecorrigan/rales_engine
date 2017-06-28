@@ -23,7 +23,6 @@ describe 'BI API - Customers with Pending Invoices' do
       expect(response).to be_success
 
       raw_customers = JSON.parse(response.body)
-      binding.pry
       customer_ids = raw_customers.map{ |c| c['id'] }
 
       expect(raw_customers).to be_a Array
