@@ -6,6 +6,8 @@ namespace :import_csv do
     Customer.destroy_all
     Invoice.destroy_all
     Transaction.destroy_all
+    Item.destroy_all
+    InvoiceItem.destroy_all
 
     merchants_text = File.read('../sales_engine/data/merchants.csv')
     csv = CSV.parse(merchants_text, :headers => true)
