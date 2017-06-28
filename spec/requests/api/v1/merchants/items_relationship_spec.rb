@@ -5,7 +5,7 @@ describe 'Merchants Items API' do
   let!(:items) { create_list(:item, 3, merchant: merchant)}
   context 'GET /api/v1/merchants/:id/items' do
     it 'returns a collection of items for that merchant' do
-      get "/api/v1/merchant/#{merchant.id}/items"
+      get "/api/v1/merchants/#{merchant.id}/items"
 
       expect(response).to be_success
 
