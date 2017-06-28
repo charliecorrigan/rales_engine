@@ -86,7 +86,7 @@ describe 'Invoice_Items Find API' do
       it 'returns error when no matching unit_price' do
         invoice_item = create(:invoice_item)
 
-        get "/api/v1/invoice_items/find?unit_price=#{invoice_item.unit_price + 1}"
+        get "/api/v1/invoice_items/find?unit_price=0.00"
 
         raw_invoice_item = JSON.parse(response.body)
 

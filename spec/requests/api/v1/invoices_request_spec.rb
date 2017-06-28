@@ -19,10 +19,6 @@ describe 'Invoices API' do
       expect(raw_invoice['merchant_id']).to be_a Integer
       expect(raw_invoice).to have_key('status')
       expect(raw_invoice['status']).to be_a String
-      expect(raw_invoice).to have_key('created_at')
-      expect(raw_invoice['created_at']).to be_a String
-      expect(raw_invoice).to have_key('updated_at')
-      expect(raw_invoice['updated_at']).to be_a String
     end
 
     it 'does not respond to /v2/'
@@ -46,12 +42,6 @@ describe 'Invoices API' do
       expect(raw_invoice).to have_key('status')
       expect(raw_invoice['status']).to be_a String
       expect(raw_invoice['status']).to eq invoice.status
-      expect(raw_invoice).to have_key('created_at')
-      expect(raw_invoice['created_at']).to be_a String
-      expect(raw_invoice['created_at']).to eq invoice.created_at
-      expect(raw_invoice).to have_key('updated_at')
-      expect(raw_invoice['updated_at']).to be_a String
-      expect(raw_invoice['updated_at']).to eq invoice.updated_at
     end
   end
 

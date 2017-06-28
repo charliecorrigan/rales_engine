@@ -24,12 +24,7 @@ describe 'Invoice_Items API' do
       expect(raw_invoice_item['quantity']).to be_a Integer
 
       expect(raw_invoice_item).to have_key('unit_price')
-      expect(raw_invoice_item['unit_price']).to be_a Integer
-
-      expect(raw_invoice_item).to have_key('created_at')
-      expect(raw_invoice_item['created_at']).to be_a String
-      expect(raw_invoice_item).to have_key('updated_at')
-      expect(raw_invoice_item['updated_at']).to be_a String
+      expect(raw_invoice_item['unit_price']).to be_a String
     end
 
     it 'does not respond to /v2/'
@@ -53,12 +48,7 @@ describe 'Invoice_Items API' do
       expect(raw_invoice_item['quantity']).to be_a Integer
 
       expect(raw_invoice_item).to have_key('unit_price')
-      expect(raw_invoice_item['unit_price']).to be_a Integer
-
-      expect(raw_invoice_item).to have_key('created_at')
-      expect(raw_invoice_item['created_at']).to be_a String
-      expect(raw_invoice_item).to have_key('updated_at')
-      expect(raw_invoice_item['updated_at']).to be_a String
+      expect(raw_invoice_item['unit_price']).to be_a String
     end
   end
 end

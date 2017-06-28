@@ -3,7 +3,5 @@ json.(invoice_item,
         :item_id,
         :invoice_id,
         :quantity,
-        :unit_price,
-        :created_at,
-        :updated_at
+        :unit_price
       )
