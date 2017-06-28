@@ -155,7 +155,7 @@ describe 'Items Find API' do
         expect(response).to be_success
         expect(raw_item["id"]).to eq(item.id)
       end
-      
+
       it 'returns error when not valid updated_at' do
         item = create(:item)
 

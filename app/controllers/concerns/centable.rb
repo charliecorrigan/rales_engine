@@ -9,6 +9,6 @@ module Centable
 
   private
     def convert_to_cents
-      params[:unit_price].to_f * 100
+      params[:unit_price].gsub('.','').to_i
     end
 end

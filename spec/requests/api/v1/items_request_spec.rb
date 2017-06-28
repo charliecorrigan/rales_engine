@@ -25,11 +25,6 @@ describe 'Items API' do
 
       expect(raw_item).to have_key('merchant_id')
       expect(raw_item['merchant_id']).to be_a Integer
-
-      expect(raw_item).to have_key('created_at')
-      expect(raw_item['created_at']).to be_a String
-      expect(raw_item).to have_key('updated_at')
-      expect(raw_item['updated_at']).to be_a String
     end
 
     it 'does not respond to /v2/'
@@ -55,11 +50,6 @@ describe 'Items API' do
 
       expect(raw_item).to have_key('merchant_id')
       expect(raw_item['merchant_id']).to be_a Integer
-
-      expect(raw_item).to have_key('created_at')
-      expect(raw_item['created_at']).to be_a String
-      expect(raw_item).to have_key('updated_at')
-      expect(raw_item['updated_at']).to be_a String
     end
   end
 end
