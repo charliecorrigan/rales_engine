@@ -1,4 +1,6 @@
 class Api::V1::InvoiceItems::FindController < ApplicationController
+  include UnitPrice
+
   def index
     @invoice_items = InvoiceItem.where(find_invoice_item_params)
   end
@@ -12,6 +14,6 @@ class Api::V1::InvoiceItems::FindController < ApplicationController
   private
 
     def find_invoice_item_params
-      params.permit(:id, :invoice_id, :item_id, :unit_price, :quantity, :created_at, :updated_at)
+      params.permit(:id, :invoice_id, :item_id, :quantity, :created_at, :updated_at).merge(unit_price)
     end
 end
