@@ -10,7 +10,6 @@ describe "Customers API" do
       expect(response).to be_success
 
       customers = JSON.parse(response.body)
-
       expect(customers.count).to eq(3)
     end
   end
