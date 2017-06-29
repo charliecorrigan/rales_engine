@@ -2,7 +2,10 @@ require 'rails_helper'
 
 describe 'Invoice Items API' do
   let(:invoice) { create(:invoice) }
-  let!(:items) { create_list(:item, 3, invoice: invoice)}
+  let!(:items) { create_list(:item, 3)}
+  let!(:invoice_item1) {create(:invoice_item, item: items[0], invoice: invoice)}
+  let!(:invoice_item2) {create(:invoice_item, item: items[1], invoice: invoice)}
+  let!(:invoice_item3) {create(:invoice_item, item: items[2], invoice: invoice)}
   let!(:other_item) { create(:item) }
   context 'GET /api/v1/invoices/:id/items' do
     it 'returns a collection of items for that invoice' do
