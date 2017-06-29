@@ -39,8 +39,8 @@ class Merchant < ApplicationRecord
     .take(quantity.to_i)
   end
 
-  def self.customers_with_pending_invoices(merchant_id)
-    find_by_sql("
+  def customers_with_pending_invoices
+    invoices.find_by_sql("
       SELECT m.id, c.* FROM merchants m
       INNER JOIN invoices i
       ON m.id = i.merchant_id
@@ -48,10 +48,9 @@ class Merchant < ApplicationRecord
       ON c.id = i.customer_id
       INNER JOIN transactions t
       ON i.id = t.invoice_id
-      WHERE m.id = #{merchant_id}
+      WHERE m.id = #{self.id}
 
       EXCEPT
-
       SELECT m.id, c.* FROM merchants m
       INNER JOIN invoices i
       ON m.id = i.merchant_id
