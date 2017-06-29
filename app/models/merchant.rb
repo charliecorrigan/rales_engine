@@ -21,6 +21,13 @@ class Merchant < ApplicationRecord
                                 total_revenue
   end
 
+  def self.revenue_for_date(date)
+    joins(:invoice_items)
+    .select("sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
+    .where("invoice_items.created_at = ?",date)
+    .group("invoice_items.created_at")
+  end
+
   # has_many :invoice_items, through: :invoices
 
   def self.customers_with_pending_invoices(id)
