@@ -3,6 +3,7 @@ class Item < ApplicationRecord
 
   belongs_to :merchant
   has_many :invoice_items
+  has_many :invoices, through: :invoice_items
 
   default_scope { order(id: :asc) }
 
@@ -12,5 +13,16 @@ class Item < ApplicationRecord
       .group(:id)
       .order("total_revenue DESC")
       .take(quantity.to_i)
+  end
+
+  def best_day
+    invoices.
+    select("invoices.created_at, sum(invoice_items.quantity) AS total_sold").
+    joins(:invoice_items, :transactions).
+    where(transactions: { result: 'success' }).
+    group(:id, "invoices.created_at").
+    order("total_sold DESC, invoices.created_at DESC").
+    limit(1).
+    first.created_at
   end
 end
