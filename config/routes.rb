@@ -14,6 +14,8 @@ Rails.application.routes.draw do
         get '/find_all', to: "find#index"
         get '/find', to: "find#show"
         get '/random', to: "random#show"
+        get '/revenue', to: "revenue_for_date#show"
+
         get '/:id/revenue', to: "revenue#show"
         get '/:id/items', to: "items#index"
         get '/:id/invoices', to: "invoices#index"
