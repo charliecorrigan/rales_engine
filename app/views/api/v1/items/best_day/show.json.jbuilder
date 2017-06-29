@@ -1,0 +1,1 @@
+json.best_day DateTime.parse(@best_day).strftime("%Y-%m-%dT%H:%M:%S.%LZ")
