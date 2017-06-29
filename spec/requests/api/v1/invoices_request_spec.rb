@@ -19,10 +19,6 @@ describe 'Invoices API' do
       expect(raw_invoice['merchant_id']).to be_a Integer
       expect(raw_invoice).to have_key('status')
       expect(raw_invoice['status']).to be_a String
-      expect(raw_invoice).to have_key('created_at')
-      expect(raw_invoice['created_at']).to be_a String
-      expect(raw_invoice).to have_key('updated_at')
-      expect(raw_invoice['updated_at']).to be_a String
     end
 
     it 'does not respond to /v2/'
@@ -46,12 +42,6 @@ describe 'Invoices API' do
       expect(raw_invoice).to have_key('status')
       expect(raw_invoice['status']).to be_a String
       expect(raw_invoice['status']).to eq invoice.status
-      expect(raw_invoice).to have_key('created_at')
-      expect(raw_invoice['created_at']).to be_a String
-      expect(raw_invoice['created_at']).to eq invoice.created_at
-      expect(raw_invoice).to have_key('updated_at')
-      expect(raw_invoice['updated_at']).to be_a String
-      expect(raw_invoice['updated_at']).to eq invoice.updated_at
     end
   end
 
@@ -227,7 +217,8 @@ describe 'Invoices API' do
 
     context '?customer_id=' do
       it 'returns all invoices with that customer_id' do
-        invoices = create_list(:invoice, 2)
+        customer = create(:customer)
+        invoices = create_list(:invoice, 2, customer: customer)
 
         get "/api/v1/invoices/find_all?customer_id=#{invoices.first.customer_id}"
 
@@ -252,7 +243,8 @@ describe 'Invoices API' do
 
     context '?merchant_id=' do
       it 'returns all invoices with that merchant_id' do
-        invoices = create_list(:invoice, 3)
+        merchant = create(:merchant)
+        invoices = create_list(:invoice, 3, merchant: merchant)
 
         get "/api/v1/invoices/find_all?merchant_id=#{invoices.first.merchant_id}"
 
@@ -354,6 +346,19 @@ describe 'Invoices API' do
         expect(raw_invoice).to be_a Array
         expect(raw_invoice.length).to eq 0
       end
+    end
+  end
+
+  context 'GET /api/v1/invoice/random' do
+    it 'returns a random invoice' do
+      invoices = create_list(:invoice, 3)
+      ids = invoices.map(&:id)
+
+      get "/api/v1/invoices/random"
+
+      raw_invoice = JSON.parse(response.body)
+
+      expect(ids.include?(raw_invoice['id'])).to be true
     end
   end
 end
