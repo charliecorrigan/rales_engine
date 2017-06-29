@@ -1,5 +1,6 @@
 class Api::V1::Merchants::RevenueController < ApplicationController
   def show
-    @revenue = Merchant.revenue(params[:id])
+    merchant = Merchant.find(params[:id])
+    @revenue = merchant.revenue(params[:date])
   end
 end

@@ -9,18 +9,18 @@ class Merchant < ApplicationRecord
 
   has_many :invoice_items, through: :invoices
 
-  def self.revenue(param_id)
-    revenue = self.find_by_sql("SELECT m.id,
-                                SUM(ii.unit_price * ii.quantity) total_revenue
-                                FROM merchants m
-                                INNER JOIN items i
-                                ON m.id = i.merchant_id
-                                INNER JOIN invoice_items ii
-                                ON i.id = ii.item_id
-                                WHERE m.id = #{param_id}
-                                GROUP BY m.id").
-                                first.
-                                total_revenue
+  def revenue(date = nil)
+    if date.nil?
+      total_revenue = invoices.joins(:invoice_items, :transactions).
+                              where(transactions: { result: 'success'}).
+                              sum("invoice_items.quantity * invoice_items.unit_price")
+    else
+      day = Date.parse(date)
+      total_revenue = invoices.joins(:invoice_items, :transactions).
+                              where(transactions: { result: 'success' }, invoices: { created_at: day.midnight..day.end_of_day }).
+                              sum("invoice_items.quantity * invoice_items.unit_price")
+    end
+    cents_to_dollar(total_revenue)
   end
 
   def self.revenue_for_date(date)
@@ -38,8 +38,6 @@ class Merchant < ApplicationRecord
     .order("total_revenue DESC")
     .take(quantity.to_i)
   end
-
-  # has_many :invoice_items, through: :invoices
 
   def self.customers_with_pending_invoices(id)
     select("customers.*")
@@ -61,5 +59,20 @@ class Merchant < ApplicationRecord
     .group(:id)
     .order("count(transactions.id) DESC")
     .first
+  end
+
+  def self.find_by_most_items(quantity)
+    select("merchants.*, sum(invoice_items.quantity) AS number_of_items").
+    joins(invoices: [:invoice_items, :transactions]).
+    where(transactions: { result: 'success'}).
+    group(:id).
+    order("number_of_items DESC").
+    limit(quantity)
+  end
+
+  private
+
+  def cents_to_dollar(cents)
+    (cents.to_f/100).to_s
   end
 end
