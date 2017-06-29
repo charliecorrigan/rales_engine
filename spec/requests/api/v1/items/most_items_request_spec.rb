@@ -31,7 +31,7 @@ describe "Item Most Items API" do
       expect(item_ids.include?(item1.id)).to be true
       expect(item_ids.include?(item1.id)).to be true
       expect(item_ids.include?(item3.id)).to be false
-      expect(result.first.id).to eq(item2.id)
+      expect(result.first["id"]).to eq(item2.id)
     end
   end
 end
