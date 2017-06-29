@@ -9,10 +9,17 @@ class Merchant < ApplicationRecord
 
   has_many :invoice_items, through: :invoices
 
-  def revenue
-    total_revenue = invoices.joins(:invoice_items, :transactions).
-                            where(transactions: { result: 'success' }).
-                            sum("invoice_items.quantity * invoice_items.unit_price")
+  def revenue(date = nil)
+    if date.nil?
+      total_revenue = invoices.joins(:invoice_items, :transactions).
+                              where(transactions: { result: 'success'}).
+                              sum("invoice_items.quantity * invoice_items.unit_price")
+    else
+      day = Date.parse(date)
+      total_revenue = invoices.joins(:invoice_items, :transactions).
+                              where(transactions: { result: 'success' }, invoices: { created_at: day.midnight..day.end_of_day }).
+                              sum("invoice_items.quantity * invoice_items.unit_price")
+    end
     cents_to_dollar(total_revenue)
   end
 
