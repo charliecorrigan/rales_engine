@@ -1,4 +1,6 @@
 class Merchant < ApplicationRecord
+  extend Dollarable
+
   has_many :items
 
   has_many :invoices
@@ -22,10 +24,11 @@ class Merchant < ApplicationRecord
   end
 
   def self.revenue_for_date(date)
-    joins(:invoice_items)
-    .select("sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
-    .where("invoice_items.created_at = ?",date)
-    .group("invoice_items.created_at")
+    revenue = self.joins(invoices: [:invoice_items, :transactions])
+                  .select("sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
+                  .where(invoices: {created_at: date})
+                  .merge(Transaction.successful)[0].total_revenue
+    convert_to_dollars(revenue)
   end
 
   # has_many :invoice_items, through: :invoices
