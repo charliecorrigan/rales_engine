@@ -39,32 +39,28 @@ class Merchant < ApplicationRecord
     .take(quantity.to_i)
   end
 
-  def customers_with_pending_invoices
-    customers
-    .where.not("customers.id IN (?)",
-      Customer.joins(:transactions)
-              .select("customers.id")
-              .where("transactions.result = ?", 'success')
-              .pluck(:id)
-    ).group("customers.id")
+  def self.customers_with_pending_invoices(merchant_id)
+    find_by_sql("
+      SELECT m.id, c.* FROM merchants m
+      INNER JOIN invoices i
+      ON m.id = i.merchant_id
+      INNER JOIN customers c
+      ON c.id = i.customer_id
+      INNER JOIN transactions t
+      ON i.id = t.invoice_id
+      WHERE m.id = #{merchant_id}
 
-    # .merge(Transaction.not_successful)
+      EXCEPT
 
-    # select("customers.*")
-    # .where("merchants.id = ?", id)
-    # .joins(customers: :transactions)
-    # .where.not(customers: {
-    #   transactions: {
-    #     result: 'success'
-    #   }
-    # }).group("customers.id")
-    # select("customers.*")
-    # .where("merchants.id = ?", id)
-    # .joins(:customers)
-    # .where(
-    #   Customer.joins(:transactions)
-    #           .where("transactions.result = ?", 'success').exists.not
-    # ).group("customers.id")
+      SELECT m.id, c.* FROM merchants m
+      INNER JOIN invoices i
+      ON m.id = i.merchant_id
+      INNER JOIN customers c
+      ON c.id = i.customer_id
+      INNER JOIN transactions t
+      ON i.id = t.invoice_id
+      WHERE t.result = 'success'
+    ")
   end
 
   def favorite_customer
