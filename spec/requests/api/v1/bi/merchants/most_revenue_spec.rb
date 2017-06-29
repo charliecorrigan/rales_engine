@@ -12,7 +12,7 @@ describe 'BI API - X Merchants with Most Revenue' do
       create_list(:invoice_item, 2, invoice: m1_invoice)
       create_list(:invoice_item, 1, invoice: m2_invoice)
 
-      get 'GET /api/v1/merchants/most_revenue?quantity=2'
+      get '/api/v1/merchants/most_revenue?quantity=2'
 
       expect(response).to be_success
 
