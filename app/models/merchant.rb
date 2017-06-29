@@ -31,6 +31,14 @@ class Merchant < ApplicationRecord
     convert_to_dollars(revenue)
   end
 
+  def self.most_revenue(quantity = 1)
+    joins(:invoice_items)
+    .select("merchants.*", "sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
+    .group(:id)
+    .order("total_revenue DESC")
+    .take(quantity.to_i)
+  end
+
   # has_many :invoice_items, through: :invoices
 
   def self.customers_with_pending_invoices(id)
