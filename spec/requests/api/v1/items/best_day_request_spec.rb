@@ -23,7 +23,7 @@ describe "Item Best Day API" do
       result = JSON.parse(response.body)
 
       expect(result).to have_key("best_day")
-      expect(result["best_day"]).to eq("2017-01-21 00:00:00")
+      expect(result["best_day"]).to eq("2017-01-21T00:00:00.000Z")
     end
   end
 end
