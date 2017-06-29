@@ -5,16 +5,15 @@ describe "Item Best Day API" do
     it "returns the date with the most sales for the given item" do
       item1 = create(:item)
 
-      invoice1 = create(:invoice, created_at: "2017-06-28 00:00:00")
-      invoice2 = create(:invoice, created_at: "2017-01-21 00:00:00")
-      create(:transaction, invoice: invoice1)
-      create(:transaction, invoice: invoice2)
-      create(:invoice_item, invoice: invoice1, item: item1)
-      create(:invoice_item, invoice: invoice1, item: item1)
-      create(:invoice_item, invoice: invoice2, item: item1)
-      create(:invoice_item, invoice: invoice2, item: item1)
-      create(:invoice_item, invoice: invoice2, item: item1)
-      create(:invoice_item, invoice: invoice2, item: item1)
+      invoice1 = create(:invoice,
+                        :with_transactions, transaction_count: 1,
+                        created_at: "2017-06-28 00:00:00")
+      invoice2 = create(:invoice,
+                        :with_transactions, transaction_count: 1,
+                        created_at: "2017-01-21 00:00:00")
+
+      create_list(:invoice_item, 2, invoice: invoice1, item: item1)
+      create_list(:invoice_item, 3, invoice: invoice2, item: item1)
 
       get "/api/v1/items/#{item1.id}/best_day"
 
