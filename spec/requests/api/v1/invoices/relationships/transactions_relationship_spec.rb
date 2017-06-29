@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'Invoices Transactions API' do
-  let(:invoice) { create(:invoice) }
-  let!(:transactions) { create_list(:transaction, 3, invoice: invoice)}
-  let!(:other_transaction) { create(:transaction) }
+  let(:invoice) { create(:invoice, :with_transactions, transaction_count: 3) }
+  let!(:other_invoice) { create(:invoice, :with_transactions, transaction_count: 1) }
+  
   context 'GET /api/v1/invoices/:id/transactions' do
     it 'returns a collection of transactions for that invoice' do
       get "/api/v1/invoices/#{invoice.id}/transactions"
