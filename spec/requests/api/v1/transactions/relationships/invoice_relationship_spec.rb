@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe 'Transaction Invoice API' do
-  let(:invoice) { create(:invoice) }
-  let!(:transaction) { create(:transaction, invoice: invoice)}
+  let(:invoice) { create(:invoice, :with_transactions) }
+  
   context 'GET /api/v1/transactions/:id/invoice' do
     it 'returns the associated invoice' do
-      get "/api/v1/transactions/#{transaction.id}/invoice"
+      get "/api/v1/transactions/#{invoice.transactions.first.id}/invoice"
 
       expect(response).to be_success
 

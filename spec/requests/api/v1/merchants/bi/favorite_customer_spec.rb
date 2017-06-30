@@ -5,11 +5,9 @@ describe "BI API - Merchant's Favorite Customer" do
     let (:merchant) { create(:merchant) }
     let (:customers) { create_list(:customer, 2) }
 
-    let (:c0_invoice) { create(:invoice, merchant: merchant, customer: customers[0]) }
-    let! (:c0i_transactions) { create_list(:transaction, 3, invoice: c0_invoice) }
+    let! (:c0_invoice) { create(:invoice, :with_transactions, transaction_count: 3, merchant: merchant, customer: customers[0]) }
 
-    let (:c1_invoice) { create(:invoice, merchant: merchant, customer: customers[1]) }
-    let! (:c1i_transactions) { create_list(:transaction, 2, invoice: c1_invoice) }
+    let (:c1_invoice) { create(:invoice, :with_transactions, transaction_count: 2, merchant: merchant, customer: customers[1]) }
     let! (:c1i_transaction_failed) { create(:transaction, result: 'failed', invoice: c1_invoice) }
 
     it 'returns the customer who has conducted the most total number of successful transactions' do
