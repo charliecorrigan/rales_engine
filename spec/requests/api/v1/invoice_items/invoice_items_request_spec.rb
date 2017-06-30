@@ -26,8 +26,6 @@ describe 'Invoice_Items API' do
       expect(raw_invoice_item).to have_key('unit_price')
       expect(raw_invoice_item['unit_price']).to be_a String
     end
-
-    it 'does not respond to /v2/'
   end
 
   context 'GET /api/v1/invoice_items/:id' do

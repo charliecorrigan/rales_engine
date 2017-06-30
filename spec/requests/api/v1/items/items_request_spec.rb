@@ -26,8 +26,6 @@ describe 'Items API' do
       expect(raw_item).to have_key('merchant_id')
       expect(raw_item['merchant_id']).to be_a Integer
     end
-
-    it 'does not respond to /v2/'
   end
 
   context 'GET /api/v1/items/:id' do
