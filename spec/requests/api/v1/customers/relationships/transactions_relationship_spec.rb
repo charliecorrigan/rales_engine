@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe 'Customers Transactions API' do
   let(:customer) { create(:customer) }
-  let(:invoice) {create(:invoice, customer: customer)}
-  let!(:transactions) { create_list(:transaction, 3, invoice: invoice)}
+  let!(:invoice) {create(:invoice, :with_transactions, transaction_count: 3, customer: customer)}
   let!(:other_transaction) {create(:transaction)}
 
   context 'GET /api/v1/customers/:id/transactions' do
