@@ -4,8 +4,7 @@ class Invoice < ApplicationRecord
   has_many :transactions
   has_many :invoice_items
   has_many :items, through: :invoice_items
-  belongs_to :customer
-  belongs_to :merchant
+
   enum status: [:shipped]
 
   def created_at
@@ -15,11 +14,4 @@ class Invoice < ApplicationRecord
   def updated_at
     attributes['updated_at'].strftime('%F %T')
   end
-
-  # def self.pending_invoices
-  #   joins(:transactions)
-  #    .where(:transactions:{result:'success'})
-  #    .
-  #
-  # end
 end

@@ -9,7 +9,7 @@ namespace :import_csv do
     Item.destroy_all
     InvoiceItem.destroy_all
 
-    merchants_text = File.read('../sales_engine/data/merchants.csv')
+    merchants_text = File.read('./db/data/merchants.csv')
     csv = CSV.parse(merchants_text, :headers => true)
     csv.each do |row|
       Merchant.create!(name: row["name"],
@@ -19,7 +19,7 @@ namespace :import_csv do
 
     puts "Merchant seed complete"
 
-    items_text = File.read('../sales_engine/data/items.csv')
+    items_text = File.read('./db/data/items.csv')
     csv = CSV.parse(items_text, :headers => true)
     csv.each do |row|
       if !Merchant.find_by(id: row["merchant_id"])
@@ -37,7 +37,7 @@ namespace :import_csv do
 
     puts "Item seed complete"
 
-    customers_text = File.read('../sales_engine/data/customers.csv')
+    customers_text = File.read('./db/data/customers.csv')
     csv = CSV.parse(customers_text, :headers => true)
     csv.each do |row|
       Customer.create!(last_name: row["last_name"],
@@ -49,7 +49,7 @@ namespace :import_csv do
     puts "Customer seed complete"
 
 
-    invoices_text = File.read('../sales_engine/data/invoices.csv')
+    invoices_text = File.read('./db/data/invoices.csv')
     csv = CSV.parse(invoices_text, :headers => true)
     csv.each do |row|
       Invoice.create!(merchant_id: row["merchant_id"],
@@ -61,7 +61,7 @@ namespace :import_csv do
 
     puts "Invoice seed complete"
 
-    invoice_items_text = File.read('../sales_engine/data/invoice_items.csv')
+    invoice_items_text = File.read('./db/data/invoice_items.csv')
     csv = CSV.parse(invoice_items_text, :headers => true)
     csv.each do |row|
       InvoiceItem.create!(item_id: row["item_id"],
@@ -74,7 +74,7 @@ namespace :import_csv do
 
     puts "InvoiceItem seed complete"
 
-    transactions_text = File.read('../sales_engine/data/transactions.csv')
+    transactions_text = File.read('./db/data/transactions.csv')
     csv = CSV.parse(transactions_text, :headers => true)
     csv.each do |row|
       Transaction.create!(credit_card_number: row["credit_card_number"],

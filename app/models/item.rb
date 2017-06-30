@@ -1,6 +1,4 @@
 class Item < ApplicationRecord
-  include Dollarable
-
   belongs_to :merchant
   has_many :invoice_items
   has_many :invoices, through: :invoice_items
@@ -19,7 +17,7 @@ class Item < ApplicationRecord
     invoices.
     select("invoices.created_at, sum(invoice_items.quantity) AS total_sold").
     joins(:invoice_items, :transactions).
-    where(transactions: { result: 'success' }).
+    merge(Transaction.successful).
     group(:id, "invoices.created_at").
     order("total_sold DESC, invoices.created_at DESC").
     limit(1).
@@ -30,7 +28,7 @@ class Item < ApplicationRecord
     unscoped.
     select("items.*, sum(invoice_items.quantity) AS total_sold").
     joins(:invoice_items, invoices: [:transactions]).
-    where(transactions: { result: 'success' }).
+    merge(Transaction.successful).
     group(:id).
     order("total_sold DESC").
     limit(quantity)

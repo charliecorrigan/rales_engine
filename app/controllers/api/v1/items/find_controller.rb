@@ -3,12 +3,13 @@ class Api::V1::Items::FindController < ApplicationController
 
   def index
     @items = Item.where(find_item_params)
+    render 'api/v1/items/index'
   end
 
   def show
     @item = Item.find_by(find_item_params)
     render :json => { :error => 'not found' }, :status => 422 if @item.nil?
-    @item
+    render 'api/v1/items/show' if @item
   end
 
   private
