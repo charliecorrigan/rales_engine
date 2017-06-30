@@ -3,12 +3,13 @@ class Api::V1::InvoiceItems::FindController < ApplicationController
 
   def index
     @invoice_items = InvoiceItem.where(find_invoice_item_params)
+    render 'api/v1/invoice_items/index'
   end
 
   def show
     @invoice_item = InvoiceItem.find_by(find_invoice_item_params)
     render :json => { :error => 'not found' }, :status => 422 if @invoice_item.nil?
-    @invoice_item
+    render 'api/v1/invoice_items/show' if @invoice_item
   end
 
   private
