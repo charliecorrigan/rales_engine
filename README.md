@@ -1,12 +1,13 @@
 # README
 
-This is a project to make sales data accessible via a JSON API.  We used Rails 5.1.2
-PostgreSQL
-Ruby 2.4.1
+This is a project to make sales data accessible via a JSON API.  We used:
+- Rails 5.1.2
+- PostgreSQL
+- Ruby 2.4.1
 
 ## To Try the project yourself:
 In Terminal
-- Make a directory to hold the directories of this project and the sample data.
+- Make a directory to hold the directories of this project (it includes the sample data).
 - Clone this repo into that directory
 - `cd ralesengine`
 - Run `bundle`
