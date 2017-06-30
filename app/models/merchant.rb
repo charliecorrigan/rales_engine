@@ -8,16 +8,13 @@ class Merchant < ApplicationRecord
 
   def revenue(date = nil)
     if date.nil?
-      total_revenue = invoices.joins(:invoice_items, :transactions).
-                              merge(Transaction.successful).
-                              sum("invoice_items.quantity * invoice_items.unit_price")
+      total_revenue = successful_merchant_transactions
+                      .sum("invoice_items.quantity * invoice_items.unit_price")
     else
       day = Date.parse(date)
-      # total_revenue = invoices.joins(:invoice_items, :transactions).
-      #                         merge(Transaction.successful).
       total_revenue = successful_merchant_transactions
-                              .where(invoices: { created_at: day.midnight..day.end_of_day }).
-                              sum("invoice_items.quantity * invoice_items.unit_price")
+                      .where(invoices: { created_at: day.midnight..day.end_of_day }).
+                      sum("invoice_items.quantity * invoice_items.unit_price")
     end
     cents_to_dollar(total_revenue)
   end
@@ -74,7 +71,7 @@ class Merchant < ApplicationRecord
   def self.find_by_most_items(quantity)
     select("merchants.*, sum(invoice_items.quantity) AS number_of_items").
     joins(invoices: [:invoice_items, :transactions]).
-    where(transactions: { result: 'success'}).
+    merge(Transaction.successful).
     group(:id).
     order("number_of_items DESC").
     limit(quantity)

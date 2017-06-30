@@ -6,7 +6,7 @@ class Customer < ApplicationRecord
     invoices.
     select("merchants.name, merchants.id, count(invoices.id) AS num_of_successful_transactions").
     joins(:transactions, :merchant).
-    where(transactions: { result: 'success' }).
+    merge(Transaction.successful).
     group("merchants.id").
     order("num_of_successful_transactions DESC").
     limit(1).first
